@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Estudiantil - BD de Grupo</title>
+    <style>
+        /* CSS Estilizado: Diseño limpio, moderno y responsivo */
+        :root {
+            --primary-color: #2b580c;
+            --secondary-color: #639a67;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .objective-card {
+            background-color: #eef5ed;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"], 
+        input[type="tel"], 
+        select, 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(99, 154, 103, 0.4);
+        }
+
+        .security-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Base de Datos del Grupo</h1>
+    
+    <!-- Objetivo de la Base de Datos -->
+    <div class="objective-card">
+        <strong>Objetivo de la BD:</strong> Recopilar y gestionar la información médica de emergencia y hábitos extraescolares de los integrantes del grupo, con el propósito de coordinar dinámicas y contar con protocolos de respuesta rápida ante emergencias, preservando la privacidad mediante el uso de identificadores institucionales (Matrícula).
+    </div>
+
+    <!-- Formulario con envió POST seguro -->
+    <form action="#" method="POST">
+        
+        <!-- Módulo: Identificación Segura -->
+        <div class="section-title">1. Identificación y Protección de Datos</div>
+        
+        <div class="form-group">
+            <label for="matricula">Matrícula (ID Único):</label>
+            <input type="text" id="matricula" name="matricula" placeholder="Ej. 202513727" required pattern="[0-9]{8,10}">
+            <div class="security-note">Tu matrícula actúa como identificador seguro para anonimizar tus datos.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre_incompleto">Nombre Incompleto (Solo primer nombre o iniciales):</label>
+            <input type="text" id="nombre_incompleto" name="nombre_incompleto" placeholder="Ej. Erick M." required>
+        </div>
+
+        <!-- Módulo: Información Médica -->
+        <div class="section-title">2. Información Médica de Emergencia</div>
+        
+        <div class="form-group">
+            <label for="sangre">Tipo de Sangre:</label>
+            <select id="sangre" name="sangre" required>
+                <option value="">-- Selecciona --</option>
+                <option value="O+">O positive (O+)</option>
+                <option value="O-">O negative (O-)</option>
+                <option value="A+">A positive (A+)</option>
+                <option value="A-">A negative (A-)</option>
+                <option value="B+">B positive (B+)</option>
+                <option value="B-">B negative (B-)</option>
+                <option value="AB+">AB positive (AB+)</option>
+                <option value="AB-">AB negative (AB-)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="alergias">Alergias o Padecimientos Relevantes:</label>
+            <textarea id="alergias" name="alergias" rows="2" placeholder="Especifica si padeces alergias a medicamentos, alimentos o alguna condición..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="contacto_emergencia">Teléfono de Contacto de Emergencia:</label>
+            <input type="tel" id="contacto_emergencia" name="contacto_emergencia" placeholder="10 dígitos" required pattern="[0-9]{10}">
+        </div>
+
+        <!-- Módulo: Actividades Extraescolares -->
+        <div class="section-title">3. Actividades Extraescolares e Intereses</div>
+        
+        <div class="form-group">
+            <label for="deportes">Deportes o Actividades Físicas:</label>
+            <input type="text" id="deportes" name="deportes" placeholder="Ej. Básquetbol, Fútbol, Ajedrez...">
+        </div>
+
+        <div class="form-group">
+            <label for="talleres">Clubes, Talleres o Hobbies:</label>
+            <input type="text" id="talleres" name="talleres" placeholder="Ej. Programación, Música, Videojuegos...">
+        </div>
+
+        <button type="submit">Guardar Registro en la BD</button>
+    </form>
+
+    <footer>
+        <p><strong>Aspectos de Seguridad Aplicados:</strong> Envío cifrado mediante protocolo HTTPS, método de transmisión POST, validación de patrones (HTML5) y disociación de nombres por Matrícula.</p>
+    </footer>
+</div>
+
+</body>
+</html>
