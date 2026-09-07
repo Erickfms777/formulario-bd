@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro Estudiantil - BD de Grupo</title>
     <style>
-        /* CSS Estilizado: Diseño limpio, moderno y responsivo */
         :root {
             --primary-color: #2b580c;
             --secondary-color: #639a67;
@@ -124,34 +123,30 @@
 <div class="container">
     <h1>Base de Datos del Grupo</h1>
     
-    <!-- Objetivo de la Base de Datos -->
     <div class="objective-card">
         <strong>Objetivo de la BD:</strong> Recopilar y gestionar la información médica de emergencia y hábitos extraescolares de los integrantes del grupo, con el propósito de coordinar dinámicas y contar con protocolos de respuesta rápida ante emergencias, preservando la privacidad mediante el uso de identificadores institucionales (Matrícula).
     </div>
 
-    <!-- Formulario con envió POST seguro -->
-    <form action="#" method="POST">
-        
-        <!-- Módulo: Identificación Segura -->
+    <!-- Formulario HTML -->
+    <form id="formularioBD">
         <div class="section-title">1. Identificación y Protección de Datos</div>
         
         <div class="form-group">
             <label for="matricula">Matrícula (ID Único):</label>
-            <input type="text" id="matricula" name="matricula" placeholder="Ej. 202513727" required pattern="[0-9]{8,10}">
+            <input type="text" id="matricula" placeholder="Ej. 202513727" required pattern="[0-9]{8,10}">
             <div class="security-note">Tu matrícula actúa como identificador seguro para anonimizar tus datos.</div>
         </div>
 
         <div class="form-group">
             <label for="nombre_incompleto">Nombre Incompleto (Solo primer nombre o iniciales):</label>
-            <input type="text" id="nombre_incompleto" name="nombre_incompleto" placeholder="Ej. Erick M." required>
+            <input type="text" id="nombre_incompleto" placeholder="Ej. Erick M." required>
         </div>
 
-        <!-- Módulo: Información Médica -->
         <div class="section-title">2. Información Médica de Emergencia</div>
         
         <div class="form-group">
             <label for="sangre">Tipo de Sangre:</label>
-            <select id="sangre" name="sangre" required>
+            <select id="sangre" required>
                 <option value="">-- Selecciona --</option>
                 <option value="O+">O positive (O+)</option>
                 <option value="O-">O negative (O-)</option>
@@ -166,34 +161,83 @@
 
         <div class="form-group">
             <label for="alergias">Alergias o Padecimientos Relevantes:</label>
-            <textarea id="alergias" name="alergias" rows="2" placeholder="Especifica si padeces alergias a medicamentos, alimentos o alguna condición..."></textarea>
+            <textarea id="alergias" rows="2" placeholder="Especifica si padeces alergias a medicamentos, alimentos o alguna condición..."></textarea>
         </div>
 
         <div class="form-group">
             <label for="contacto_emergencia">Teléfono de Contacto de Emergencia:</label>
-            <input type="tel" id="contacto_emergencia" name="contacto_emergencia" placeholder="10 dígitos" required pattern="[0-9]{10}">
+            <input type="tel" id="contacto_emergencia" placeholder="10 dígitos" required pattern="[0-9]{10}">
         </div>
 
-        <!-- Módulo: Actividades Extraescolares -->
         <div class="section-title">3. Actividades Extraescolares e Intereses</div>
         
         <div class="form-group">
             <label for="deportes">Deportes o Actividades Físicas:</label>
-            <input type="text" id="deportes" name="deportes" placeholder="Ej. Básquetbol, Fútbol, Ajedrez...">
+            <input type="text" id="deportes" placeholder="Ej. Básquetbol, Fútbol, Ajedrez...">
         </div>
 
         <div class="form-group">
             <label for="talleres">Clubes, Talleres o Hobbies:</label>
-            <input type="text" id="talleres" name="talleres" placeholder="Ej. Programación, Música, Videojuegos...">
+            <input type="text" id="talleres" placeholder="Ej. Programación, Música, Videojuegos...">
         </div>
 
-        <button type="submit">Guardar Registro en la BD</button>
+        <button type="submit" id="btnEnviar">Guardar Registro en la BD</button>
     </form>
 
     <footer>
-        <p><strong>Aspectos de Seguridad Aplicados:</strong> Envío cifrado mediante protocolo HTTPS, método de transmisión POST, validación de patrones (HTML5) y disociación de nombres por Matrícula.</p>
+        <p><strong>Aspectos de Seguridad Aplicados:</strong> Almacenamiento en Base de Datos NoSQL Firebase (Google Cloud Platform), envío cifrado bajo SSL/TLS (HTTPS) y disociación de datos con ID de Matrícula.</p>
     </footer>
 </div>
+
+<!-- SDK de Firebase mediante CDN -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Configuración de tu proyecto en Firebase con tus claves
+  const firebaseConfig = {
+    apiKey: "AIzaSyDxgPVptFH2aVOn7CySiHwQAFlsQ3iBNc0",
+    authDomain: "clasedb-6ef88.firebaseapp.com",
+    projectId: "clasedb-6ef88",
+    storageBucket: "clasedb-6ef88.firebasestorage.app",
+    messagingSenderId: "266249307631",
+    appId: "1:266249307631:web:3e11a0a275f93987ace21a"
+  };
+
+  // Inicializar Firebase y Firestore
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Evento para guardar en la BD
+  document.getElementById('formularioBD').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnEnviar');
+    btn.disabled = true;
+    btn.innerText = "Guardando en la BD...";
+
+    try {
+      await addDoc(collection(db, "alumnos"), {
+        matricula: document.getElementById('matricula').value,
+        nombre_incompleto: document.getElementById('nombre_incompleto').value,
+        sangre: document.getElementById('sangre').value,
+        alergias: document.getElementById('alergias').value || "Ninguna",
+        contacto_emergencia: document.getElementById('contacto_emergencia').value,
+        deportes: document.getElementById('deportes').value || "Ninguno",
+        talleres: document.getElementById('talleres').value || "Ninguno",
+        fecha_registro: new Date().toISOString()
+      });
+
+      alert("¡Registro guardado exitosamente en la Base de Datos!");
+      document.getElementById('formularioBD').reset();
+    } catch (error) {
+      console.error("Error al guardar: ", error);
+      alert("Ocurrió un error al guardar: " + error.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerText = "Guardar Registro en la BD";
+    }
+  });
+</script>
 
 </body>
 </html>
